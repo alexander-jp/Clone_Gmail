@@ -21,22 +21,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class GalleryViewModel extends ViewModel {
     //MutableLiveData getter and setter
-        MutableLiveData<List<Results>> listMutableLiveData;
+    MutableLiveData<List<Movie>> listMutableLiveData;
     List<Movie> modelList;
     CompositeDisposable compositeDisposable;
-    List<Results> results;
-    Results resultado;
 
     public GalleryViewModel() {
         compositeDisposable = new CompositeDisposable();
     }
 
-    public LiveData<List<Results>> getLugaresModel() {
+    public LiveData<List<Movie>> getLugaresModel() {
         getFetchDataServer();
         if (listMutableLiveData == null) {
             listMutableLiveData = new MutableLiveData<>();
             modelList = new ArrayList<>();
-            results = new ArrayList<>();
         }
         return listMutableLiveData;
     }
@@ -48,7 +45,8 @@ public class GalleryViewModel extends ViewModel {
     private void getFetchDataServer() {
         Url service = new BaseRetrofitUrl().getBaseurl().create(Url.class);
         compositeDisposable.add(service.getDataLugares(1).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe((lugaresModels) -> {
-            this.listMutableLiveData.setValue(lugaresModels.getResults());
+            modelList.add(lugaresModels);
+            this.listMutableLiveData.setValue(modelList);
         }, e -> e.printStackTrace()));
     }
 

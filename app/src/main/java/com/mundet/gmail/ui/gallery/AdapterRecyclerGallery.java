@@ -5,11 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mundet.gmail.R;
 import com.mundet.gmail.model.Movie;
 import com.mundet.gmail.model.Results;
@@ -39,7 +41,7 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
         holder.textViewNombre.setText(arrayList.get(position).getTitle());
         holder.textViewDescripcion.setText(arrayList.get(position).getOriginal_title());
         holder.textViewUbicacion.setText(arrayList.get(position).getOverview());
-
+        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + arrayList.get(position).getPoster_path()).into(holder.imageView);
         //holder.eventListener(arrayList);
     }
 
@@ -50,12 +52,14 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textViewNombre, textViewDescripcion, textViewUbicacion;
+        ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNombre = itemView.findViewById(R.id.lugaresNombre);
             textViewDescripcion = itemView.findViewById(R.id.lugaresDescripcion);
             textViewUbicacion = itemView.findViewById(R.id.lugaresUbicacion);
+            imageView = itemView.findViewById(R.id.imgMovie);
         }
 
         public void eventListener(ArrayList<Movie> arrayList) {

@@ -1,6 +1,7 @@
 package com.mundet.gmail.ui.gallery;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.mundet.gmail.model.Movie;
 import com.mundet.gmail.model.Results;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GalleryFragment extends Fragment {
@@ -29,10 +32,11 @@ public class GalleryFragment extends Fragment {
         RecyclerView lista = root.findViewById(R.id.recyclerListGallery);
         lista.setHasFixedSize(true);
         lista.setLayoutManager(new LinearLayoutManager(getActivity()));
-        galleryViewModel.getLugaresModel().observe(this, new Observer<List<Results>>() {
+        galleryViewModel.getLugaresModel().observe(this, new Observer<List<Movie>>() {
             @Override
-            public void onChanged(List<Results> movies) {
-                lista.setAdapter(new AdapterRecyclerGallery(movies, getActivity()));
+            public void onChanged(List<Movie> movies) {
+                Log.i("TAG5", movies.get(0).getName());
+                lista.setAdapter(new AdapterRecyclerGallery(movies.get(0).getResults(), getActivity()));
             }
         });
         return root;
