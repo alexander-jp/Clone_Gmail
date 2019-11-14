@@ -16,17 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mundet.gmail.R;
+import com.mundet.gmail.model.BaseUrl;
 import com.mundet.gmail.model.Movie;
 import com.mundet.gmail.model.Results;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecyclerGallery.MyViewHolder> {
 
     List<Results> arrayList = new ArrayList<>();
     Context context;
-    private static final String URL_IMG = "https://image.tmdb.org/t/p/w500";
 
     public AdapterRecyclerGallery(List<Results> arrayList, Context context) {
         this.arrayList = arrayList;
@@ -43,7 +44,7 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
     @Override
     public void onBindViewHolder(@NonNull AdapterRecyclerGallery.MyViewHolder holder, int position) {
         holder.textViewNombre.setText(arrayList.get(position).getTitle());
-        Glide.with(context).load(URL_IMG + arrayList.get(position).getPoster_path()).into(holder.imageView);
+        Glide.with(context).load(BaseUrl.URL_IMG + arrayList.get(position).getPoster_path()).into(holder.imageView);
         holder.itemView.setOnClickListener(view -> {
             holder.eventListener(arrayList, position);
         });
@@ -55,7 +56,7 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewNombre, textViewDescripcion, textViewUbicacion;
+        TextView textViewNombre;
         ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -66,7 +67,7 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
 
         public void eventListener(List<Results> array, int position) {
             Intent intent = new Intent(context, DetailMovie.class);
-            intent.putExtra("Movie", (Parcelable) array);
+            intent.putExtra("Movie", array.get(position));
             context.startActivity(intent);
         }
     }
