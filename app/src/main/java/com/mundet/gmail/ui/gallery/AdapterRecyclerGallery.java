@@ -1,12 +1,15 @@
 package com.mundet.gmail.ui.gallery;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +26,7 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
 
     List<Results> arrayList = new ArrayList<>();
     Context context;
+    private static final String URL_IMG = "https://image.tmdb.org/t/p/w500";
 
     public AdapterRecyclerGallery(List<Results> arrayList, Context context) {
         this.arrayList = arrayList;
@@ -39,10 +43,10 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
     @Override
     public void onBindViewHolder(@NonNull AdapterRecyclerGallery.MyViewHolder holder, int position) {
         holder.textViewNombre.setText(arrayList.get(position).getTitle());
-        holder.textViewDescripcion.setText(arrayList.get(position).getOriginal_title());
-        holder.textViewUbicacion.setText(arrayList.get(position).getOverview());
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + arrayList.get(position).getPoster_path()).into(holder.imageView);
-        //holder.eventListener(arrayList);
+        Glide.with(context).load(URL_IMG + arrayList.get(position).getPoster_path()).into(holder.imageView);
+        holder.itemView.setOnClickListener(view -> {
+            holder.eventListener(arrayList, position);
+        });
     }
 
     @Override
@@ -56,14 +60,14 @@ public class AdapterRecyclerGallery extends RecyclerView.Adapter<AdapterRecycler
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewNombre = itemView.findViewById(R.id.lugaresNombre);
-            textViewDescripcion = itemView.findViewById(R.id.lugaresDescripcion);
-            textViewUbicacion = itemView.findViewById(R.id.lugaresUbicacion);
+            textViewNombre = itemView.findViewById(R.id.txtTitleMovie);
             imageView = itemView.findViewById(R.id.imgMovie);
         }
 
-        public void eventListener(ArrayList<Movie> arrayList) {
-
+        public void eventListener(List<Results> array, int position) {
+            Intent intent = new Intent(context, DetailMovie.class);
+            intent.putExtra("Movie", (Parcelable) array);
+            context.startActivity(intent);
         }
     }
 }
